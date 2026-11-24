@@ -25,7 +25,7 @@ Butuh Node.js 18 atau lebih baru dan MySQL (misalnya dari XAMPP).
    ```bash
    mysql -u root -p < mysql.schema
    ```
-2. Sesuaikan `nisa/.env` dengan MySQL kamu: `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, dan ganti `JWT_SECRET` dengan string acak yang panjang.
+2. Salin `nisa/.env.example` menjadi `nisa/.env`, lalu isi sesuai MySQL kamu. `JWT_SECRET` wajib diisi string acak yang panjang (misalnya hasil `openssl rand -hex 32`); tanpa itu login ditolak.
 3. Jalankan aplikasinya:
    ```bash
    cd nisa

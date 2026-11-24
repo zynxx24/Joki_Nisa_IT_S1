@@ -5,7 +5,12 @@ import bcrypt from 'bcryptjs';
 import { NextApiRequest } from 'next';
 import { query } from './db';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-fallback-secret-key';
+// No fallback: a default secret would let anyone who reads this code forge admin tokens.
+function jwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error('JWT_SECRET belum diisi di .env');
+  return secret;
+}
 
 export interface JWTPayload {
   adminId?: number;
@@ -16,13 +21,13 @@ export interface JWTPayload {
 
 // Generate JWT token
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
+  return jwt.sign(payload, jwtSecret(), { expiresIn: '24h' });
 }
 
 // Verify JWT token
 export function verifyToken(token: string): JWTPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, jwtSecret()) as JWTPayload;
   } catch (error) {
     return null;
   }
